@@ -3,4 +3,4 @@ function isPalindrome(word) {
     return reversed === word
 }
 
-console.log(isPalindrome('abba'));
+console.log(isPalindrome('abba'))

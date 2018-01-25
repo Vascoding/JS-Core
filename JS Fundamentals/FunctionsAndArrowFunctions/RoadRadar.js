@@ -30,7 +30,7 @@ function roadRadar(args) {
     }
 
     let limit = getLimit(zone)
-    console.log(isOverLimit(limit, speed));
+    console.log(isOverLimit(limit, speed))
 }
 
 roadRadar([40, 'city'])

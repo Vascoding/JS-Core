@@ -4,4 +4,4 @@ function dayOfWeek(str) {
     return index !== -1 ? index + 1 : 'error'
 }
 
-console.log(dayOfWeek('Tuesday'));
+console.log(dayOfWeek('Tuesday'))
