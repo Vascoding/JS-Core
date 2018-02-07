@@ -1,9 +1,9 @@
 function uniqueSequences(arr) {
     let ordered = new Map()
-    let mySort = (first, second, map) => map.get(first) - map.get(second);
+    let mySort = (first, second, map) => map.get(first) - map.get(second)
     for (let i = 0; i < arr.length; i++) {
-        let array = JSON.parse(arr[i]).map(Number).sort((a, b) => b - a);
-        let toStore = `[${array.join(', ')}]`;
+        let array = JSON.parse(arr[i]).map(Number).sort((a, b) => b - a)
+        let toStore = `[${array.join(', ')}]`
         if (!ordered.has(toStore)) {
             ordered.set(toStore, array.length)
         }
