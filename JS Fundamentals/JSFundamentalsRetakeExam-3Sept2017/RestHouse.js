@@ -12,6 +12,8 @@ function restHouse(roomsArr, peopleArr) {
         }
     }
 
+    let placedPeople = new Set()
+
     for (let pair of peopleArr) {
         let first = pair['first']
         let second = pair['second']
@@ -21,35 +23,39 @@ function restHouse(roomsArr, peopleArr) {
             let genderType = firstGender
             for (let [room, type] of rooms) {
                 for (let [roomType, people] of type) {
-                    if (roomType === tripleBedded && people.length === 0 && first !== undefined && second !== undefined) {
-                        people.push(first)
-                        people.push(second)
-                        roomBeds += 2
-                        first = undefined
-                        second = undefined
+                    if (roomType === tripleBedded && people.length === 0) {
+                        if (!placedPeople.has(first)) {
+                            people.push(first)
+                            placedPeople.add(first)
+                            roomBeds++
+                        }
+                        if (!placedPeople.has(second)) {
+                            people.push(second)
+                            placedPeople.add(second)
+                            roomBeds++
+                        }
                     }
-                    else if (roomType === tripleBedded && people.length === 1 && genderType === people[0].gender && first !== undefined && second !== undefined) {
-                        people.push(first)
-                        people.push(second)
-                        roomBeds += 2
-                        first = undefined
-                        second = undefined
+                    else if (roomType === tripleBedded && people.length === 1 && genderType === people[0].gender) {
+                        if (!placedPeople.has(first)) {
+                            people.push(first)
+                            placedPeople.add(first)
+                            roomBeds++
+                        }
+                        if (!placedPeople.has(second)) {
+                            people.push(second)
+                            placedPeople.add(second)
+                            roomBeds++
+                        }
                     }
                     else if (roomType === tripleBedded && people.length === 2 && genderType === people[0].gender) {
-                        if (first !== undefined) {
+                        if (!placedPeople.has(first)) {
                             people.push(first)
-                            first = undefined
+                            roomBeds++
+                            placedPeople.add(first)
                         } else {
                             people.push(second)
-                            second = undefined
-                        }
-                        roomBeds++
-
-                    } else {
-                        if (first !== undefined) {
-
-                        }
-                        if (second !== undefined) {
+                            roomBeds++
+                            placedPeople.add(second)
 
                         }
                     }
@@ -58,12 +64,12 @@ function restHouse(roomsArr, peopleArr) {
         } else {
             for (let [room, type] of rooms) {
                 for (let [roomType, people] of type) {
-                    if (roomType === doubleBedded && first !== undefined && second !== undefined) {
+                    if (roomType === doubleBedded && people.length === 0 && !placedPeople.has(first) && !placedPeople.has(second)) {
                         people.push(first)
                         people.push(second)
+                        placedPeople.add(first)
+                        placedPeople.add(second)
                         roomBeds += 2
-                        first = undefined
-                        second = undefined
                     }
                 }
             }
@@ -71,7 +77,6 @@ function restHouse(roomsArr, peopleArr) {
     }
 
     let roomsKeySort = Array.from(rooms.keys()).sort()
-
 
     for (let roomKey of roomsKeySort) {
         console.log(`Room number: ${roomKey}`)
@@ -93,27 +98,53 @@ function restHouse(roomsArr, peopleArr) {
     console.log(`Guests moved to the tea house: ${peopleArr.length * 2 - roomBeds}`)
 }
 
-restHouse([{"number": "428", "type": "triple"},
-        {"number": "161", "type": "triple"},
-        {"number": "242", "type": "double-bedded"},
-        {"number": "537", "type": "triple"}],
+restHouse([{"number": "600", "type": "triple"},
+        {"number": "217", "type": "triple"},
+        {"number": "408A", "type": "double-bedded"},
+        {"number": "442", "type": "double-bedded"},
+        {"number": "482", "type": "double-bedded"},
+        {"number": "303", "type": "triple"},
+        {"number": "906", "type": "double-bedded"},
+        {"number": "705", "type": "triple"},
+        {"number": "405A", "type": "double-bedded"},
+        {"number": "495", "type": "double-bedded"}],
     [{
-        "first": {"name": "Nina Diaz", "gender": "female", "age": 29},
-        "second": {"name": "Carol Hansen", "gender": "female", "age": 6}
+        "first": {"name": "Javier Ortega", "gender": "male", "age": 59},
+        "second": {"name": "Kevin Huff", "gender": "male", "age": 67}
     },
         {
-            "first": {"name": "Georgia Thomas", "gender": "female", "age": 38},
-            "second": {"name": "Freddie Harmon", "gender": "male", "age": 46}
+            "first": {"name": "Horace Thornton", "gender": "male", "age": 39},
+            "second": {"name": "Alejandro Lane", "gender": "male", "age": 10}
         },
         {
-            "first": {"name": "Freddie Harmon", "gender": "male", "age": 30},
-            "second": {"name": "Jesus Terry", "gender": "male", "age": 64}
+            "first": {"name": "Chelsea Wilkins", "gender": "female", "age": 65},
+            "second": {"name": "Audrey Underwood", "gender": "female", "age": 23}
         },
         {
-            "first": {"name": "Tracy Reid", "gender": "male", "age": 41},
-            "second": {"name": "Jordan Garner", "gender": "male", "age": 16}
+            "first": {"name": "Ora Wilkerson", "gender": "female", "age": 57},
+            "second": {"name": "Melody Gill", "gender": "female", "age": 53}
         },
         {
-            "first": {"name": "Kara Burns", "gender": "female", "age": 7},
-            "second": {"name": "Marjorie Butler", "gender": "female", "age": 28}
+            "first": {"name": "Andre Kim", "gender": "male", "age": 4},
+            "second": {"name": "Sammy Thompson", "gender": "male", "age": 47}
+        },
+        {
+            "first": {"name": "Sadie Carson", "gender": "female", "age": 66},
+            "second": {"name": "Wendell Powell", "gender": "male", "age": 43}
+        },
+        {
+            "first": {"name": "Monica Dunn", "gender": "female", "age": 48},
+            "second": {"name": "Audrey Underwood", "gender": "female", "age": 19}
+        },
+        {
+            "first": {"name": "Valerie French", "gender": "female", "age": 68},
+            "second": {"name": "Merle Jenkins", "gender": "male", "age": 62}
+        },
+        {
+            "first": {"name": "Kelly Manning", "gender": "female", "age": 6},
+            "second": {"name": "Laurie Montgomery", "gender": "female", "age": 23}
+        },
+        {
+            "first": {"name": "Violet Kelly", "gender": "female", "age": 10},
+            "second": {"name": "Billy Maxwell", "gender": "male", "age": 48}
         }])
