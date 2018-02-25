@@ -35,8 +35,8 @@ function robot() {
         return `protein=${ingredients.protein} carbohydrate=${ingredients.carbohydrate} fat=${ingredients.fat} flavour=${ingredients.flavour}`
     }
 
-    return function commandParser(str) {
-        let cmdInfo = str.split(' ');
+    return function commandParser(input) {
+        let cmdInfo = input.split(' ');
         let cmd = cmdInfo.shift();
         switch (cmd) {
             case "prepare":
@@ -48,4 +48,7 @@ function robot() {
         }
     }
 }
+
+
+
 

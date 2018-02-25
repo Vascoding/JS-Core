@@ -9,7 +9,8 @@ function add(num) {
     calc.toString = function () {
         return sum
     }
+
     return calc;
 }
 
-console.log(add(1)(5)(-1).toString());
+console.log(add(1)(51)(-1).toString());
