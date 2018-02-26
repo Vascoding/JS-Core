@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../JQueryLibrary/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<input type="text" id="num1" />
+<input type="text" id="num2" />
+<input type="text" id="result" readonly />
+<br>
+<button id="sumButton">Sum</button>
+<button id="subtractButton">Subtract</button>
+<script>
+    $(function() {
+        let model = provideModel();
+        model.init('#num1', '#num2', '#result');
+        $('#sumButton').click(model.add);
+        $('#subtractButton').click(model.subtract);
+    })
+    function provideModel() {
+        let model = {
+            init: (selector1, selector2, resultSelector) => {
+                model.num1 = $(selector1)
+                model.num2 = $(selector2)
+                model.result = $(resultSelector)
+            },
+            add: () => model.action((a, b) => a + b),
+            subtract: () => model.action((a, b) => a - b),
+            action: (operation) => {
+                let val1 = Number(model.num1.val())
+                let val2 = Number(model.num2.val())
+                model.result.val(operation(val1, val2))
+            },
+        }
+        return model;
+    }
+</script>
+</body>
+</html>
