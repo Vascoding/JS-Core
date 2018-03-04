@@ -57,8 +57,15 @@ describe('Test ArmageDOM', function () {
     })
 
     it('Should return undefined', function () {
-        let div = $('div #target')
-        nuke('div', '#target');
-        expect(div.innerHTML).to.be.equal(undefined)
+        let beforeNuke = $('span.target').html()
+        nuke('div', '.target');
+        let afterNuke = $('span.target').html()
+        expect(beforeNuke).to.be.equal(afterNuke)
+    })
+
+    it('Should return undefined', function () {
+        nuke('span', '.target');
+        let afterNuke = $('span.target').html()
+        expect(afterNuke).to.be.equal(undefined)
     })
 })
