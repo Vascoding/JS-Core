@@ -2,7 +2,7 @@ function extension() {
     let myObj = {
         extend: function (template) {
             for (let el in template) {
-                if (template[el] === '[object Function]') {
+                if (template[el] && {}.toString.call(template[el]) === '[object Function]') {
                     Object.getPrototypeOf(this)[el] = template[el]
                 } else {
                     this[el] = template[el]

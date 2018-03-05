@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sort Table</title>
+    <style>
+        body {
+            padding: 30px;
+        }
+        table {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px 20px;
+        }
+        th {
+            background: #cccccc;
+        }
+        tr:nth-child(odd) {
+            background: #eeeeee;
+        }
+        tr:nth-child(even) {
+            background: #dddddd;
+        }
+        a {
+            color: black;
+            text-decoration: none;
+        }
+        a:hover {
+            color: white;
+        }
+        .active {
+            color: #99ff99;
+        }
+    </style>
+    <script src="../JQueryLibrary/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+<h1>Sort Table</h1>
+<table id="products">
+    <thead>
+    <tr>
+        <th>Name <a href="javascript:sort(0, false)">&#x25B2;</a> <a href="javascript:sort(0, true)">&#x25BC;</a></th>
+        <th>Price <a href="javascript:sort(1, false)">&#x25B2;</a> <a href="javascript:sort(1, true)">&#x25BC;</a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Potatoes</td>
+        <td>0.89</td>
+    </tr>
+    <tr>
+        <td>Tomatoes</td>
+        <td>2.30</td>
+    </tr>
+    <tr>
+        <td>Bananas</td>
+        <td>1.79</td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    function sort(colIndex, descending) {
+        let tr = $('tbody').find('tr')
+        if (colIndex === 0) {
+            if (descending) {
+                tr.sort((a, b) => {
+                    return b.children[0].textContent.localeCompare(a.children[0].textContent)
+                })
+                $('tbody').find('tr').remove()
+                $('tbody').append(tr)
+            } else {
+                tr.sort((a, b) => {
+                    return a.children[0].textContent.localeCompare(b.children[0].textContent)
+                })
+                $('tbody').find('tr').remove()
+                $('tbody').append(tr)
+            }
+        } else {
+            if (descending) {
+                tr.sort((a, b) => {
+                    return b.children[1].textContent - a.children[1].textContent
+                })
+                $('tbody').find('tr').remove()
+                $('tbody').append(tr)
+            } else {
+                tr.sort((a, b) => {
+                    return a.children[1].textContent - b.children[1].textContent
+                })
+                $('tbody').find('tr').remove()
+                $('tbody').append(tr)
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
