@@ -37,6 +37,13 @@ describe('Test Sumator Class', function () {
     })
 
     it('Should return empty array', function () {
+        expect(Sumator.prototype.hasOwnProperty('add')).to.be.equal(true)
+        expect(Sumator.prototype.hasOwnProperty('sumNums')).to.be.equal(true)
+        expect(Sumator.prototype.hasOwnProperty('removeByFilter')).to.be.equal(true)
+        expect(Sumator.prototype.hasOwnProperty('toString')).to.be.equal(true)
+    })
+
+    it('Should return empty array', function () {
         expect(sumator.toString()).to.be.equal('(empty)')
     })
     it('Should add correctly', function () {

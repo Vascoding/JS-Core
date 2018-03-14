@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>List Items: Up / Down</title>
+    <style>button { margin: 3px 0 3px 8px }</style>
+    <script src="../JQueryLibrary/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div id="main"></div>
+<script>
+    function listBuilder(selector) {
+        return {
+            createNewList: function () {
+                $(selector).html('')
+                $(selector).append('<ul>')
+            },
+
+            addItem: function (item) {
+                let ul = $(selector).find('ul')
+                let up = $('<button>Up</button>')
+                up.on('click', function (event) {
+                    let item = event.target.parentNode
+                    $(item).insertBefore($(item).prev())
+                })
+                let down = $('<button>Down</button>')
+                down.on('click', function (event) {
+                    let item = event.target.parentNode
+                    $(item).insertAfter($(item).next())
+                })
+
+                let li = $(`<li>${item}</li>`)
+                li.append(up)
+                li.append(down)
+                li.appendTo(ul)
+            }
+        }
+    }
+</script>
+<script>
+    $(function() {
+        let builder = listBuilder("#main");
+        builder.createNewList();
+        builder.addItem("Sofia");
+        builder.addItem("Varna");
+        builder.addItem("Sofia <new>");
+        builder.addItem("Pleven");
+    });
+</script>
+</body>
+</html>
