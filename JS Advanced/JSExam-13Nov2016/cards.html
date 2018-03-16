@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cards</title>
+    <style>
+        div.card {
+            display: inline-block; padding: 10px; margin: 10px;
+            width: 50px; height: 80px; background: #EEE;
+            border: 3px solid #DDD; border-radius: 5px;
+            font-size: 18pt; text-align: center; line-height: 75px;
+        }
+    </style>
+    <script src="../JQueryLibrary/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div id="main"></div>
+<script>
+    function cardDeckBuilder(selector) {
+        let validCards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+        let Suits = {
+            S: '\u2660',
+            H: '\u2665',
+            D: '\u2666',
+            C: '\u2663'
+        }
+        return{
+            addCard(face, suit){
+                if (validCards.includes(face) && Suits[suit] !== undefined) {
+                    let div = $('<div>').text(`${face} ${Suits[suit]}`)
+                    div.addClass('card')
+                    div.on('click', function (event) {
+                        let d = event.target.parentNode
+                        $(d).children().each(function(i,div){$(d).prepend(div)})
+
+                    })
+                    $(selector).append(div)
+                }
+            }
+        }
+    }
+</script>
+<script>
+    $(function() {
+        let builder = cardDeckBuilder("#main");
+        builder.addCard("10", "D");
+        builder.addCard("K", "S");
+        builder.addCard("Q", "H");
+        builder.addCard("4", "C");
+    });
+</script>
+</body>
+</html>
