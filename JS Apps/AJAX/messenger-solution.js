@@ -14,7 +14,7 @@ function attachEvents() {
             url: 'https://firstfirebaseproject-18f55.firebaseio.com/messenger.json',
             data: JSON.stringify(message),
             success: function () {
-                content.val('')
+                    content.val('')
             },
             error: function (err) {
                 console.log(err)
@@ -29,7 +29,7 @@ function attachEvents() {
             success: function (res) {
                 let result = ''
                 let ordered = Object.keys(res).sort((a, b) => {
-                    return res[a].timestamp - res[b].timestamp
+                    return res[b].timestamp - res[a].timestamp
                 })
                 for (let key of ordered) {
                     result += `${res[key].author}: ${res[key].content}\n`

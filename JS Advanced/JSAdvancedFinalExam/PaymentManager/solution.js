@@ -8,7 +8,6 @@ class PaymentManager{
         let table = $('<table>')
         let caption = $('<caption>').text(`${this.title} Payment Manager`)
         caption.appendTo(table)
-
         let thead = $('<thead>')
         let tr = $('<tr>')
         let name = $('<th>')
