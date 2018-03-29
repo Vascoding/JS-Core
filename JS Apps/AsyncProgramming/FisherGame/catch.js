@@ -15,11 +15,11 @@ function attachEvents() {
         $.ajax({
             method: 'POST',
             url: `https://baas.kinvey.com/appdata/kid_BkBca7B9G/biggestCatches`,
-            data: catchObject,
             success: function (res) {
             },
             error: function (err) {
             },
+            data: JSON.stringify(catchObject),
             beforeSend: authorize
         })
     })
@@ -63,11 +63,11 @@ function attachEvents() {
                         $.ajax({
                             method: 'PUT',
                             url: `https://baas.kinvey.com/appdata/kid_BkBca7B9G/biggestCatches/${targetId}`,
-                            data: catchObject,
                             success: function (res) {
                             },
                             error: function (err) {
                             },
+                            data: JSON.stringify(catchObject),
                             beforeSend: authorize
                         })
                     })
