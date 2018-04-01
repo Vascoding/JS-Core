@@ -15,8 +15,6 @@ function loginUser() {
     }).then(function (res) {
         signInUser(res, 'Login successful.')
     }).catch(handleAjaxError)
-    // POST -> BASE_URL + 'user/' + APP_KEY + '/login'
-    // signInUser(res, 'Login successful.')
 }
 
 function registerUser() {
@@ -30,8 +28,6 @@ function registerUser() {
     }).then(function (res) {
         signInUser(res, 'Register successfully')
     }).catch(handleAjaxError)
-    // POST -> BASE_URL + 'user/' + APP_KEY + '/'
-    // signInUser(res, 'Registration successful.')
 }
 
 function listBooks() {
@@ -41,8 +37,6 @@ function listBooks() {
     }).then(function (res) {
         displayPaginationAndBooks(res.reverse())
     }).catch(handleAjaxError)
-    // GET -> BASE_URL + 'appdata/' + APP_KEY + '/books'
-    // displayPaginationAndBooks(res.reverse())
 }
 
 
@@ -57,8 +51,6 @@ function createBook() {
         headers: {'Authorization': `Kinvey ${sessionStorage.getItem('authToken')}`},
         data: {title, author, description, userId}
     }).then(listBooks).catch(handleAjaxError)
-    // POST -> BASE_URL + 'appdata/' + APP_KEY + '/books'
-    // showInfo('Book created.')
 }
 
 function deleteBook(book) {
@@ -67,8 +59,6 @@ function deleteBook(book) {
         url: BASE_URL + 'appdata/' + APP_KEY + '/books/' + book._id,
         headers: {'Authorization': `Kinvey ${sessionStorage.getItem('authToken')}`}
     }).then(listBooks).catch(handleAjaxError)
-    // DELETE -> BASE_URL + 'appdata/' + APP_KEY + '/books/' + book._id
-    // showInfo('Book deleted.')
 }
 
 function loadBookForEdit(book) {
@@ -91,8 +81,6 @@ function editBook() {
         headers: {'Authorization': `Kinvey ${sessionStorage.getItem('authToken')}`},
         data: {title, author, description, userId}
     }).then(listBooks).catch(handleAjaxError)
-    // PUT -> BASE_URL + 'appdata/' + APP_KEY + '/books/' + book._id
-    // showInfo('Book edited.')
 }
 
 function saveAuthInSession(userInfo) {
