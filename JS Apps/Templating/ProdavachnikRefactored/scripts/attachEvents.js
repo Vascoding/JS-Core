@@ -1,4 +1,4 @@
-function attachAllEvents() {
+function attachLinkEvents() {
     $("#linkHome").on('click', function () {
         if (window.requestRunning === true) {
             return
@@ -36,10 +36,6 @@ function attachAllEvents() {
         logoutUser()
     })
 
-    $("#buttonLoginUser").on('click', loginUser)
-    $("#buttonRegisterUser").on('click', registerUser)
-    $("#buttonCreateAd").on('click', createAd)
-    $("#buttonEditAd").on('click', editAd)
 
     $("#infoBox, #errorBox").on('click', function() {
         $(this).fadeOut()
@@ -49,4 +45,11 @@ function attachAllEvents() {
         ajaxStart: function() { $("#loadingBox").show(), window.requestRunning = true},
         ajaxStop: function() { $("#loadingBox").hide(), window.requestRunning = false}
     })
+}
+
+function attachBtnEvents() {
+    $("#buttonLoginUser").on('click', loginUser)
+    $("#buttonRegisterUser").on('click', registerUser)
+    $("#buttonCreateAd").on('click', createAd)
+    $("#buttonEditAd").on('click', editAd)
 }

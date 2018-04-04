@@ -75,47 +75,49 @@ function listAds() {
     $.ajax({
         url: URL_FOR_CRUD,
         headers: {'Authorization': `Kinvey ${sessionStorage.getItem('authToken')}`},
-    }).then((res) => {
-        showAdsView()
-        let allAds = $('#ads')
-        allAds.empty()
-        let table = $('<table>')
-        let firstTr = $('<tr>')
-        firstTr.append('<th>Title</th>')
-        firstTr.append('<th>Publisher</th>')
-        firstTr.append('<th>Description</th>')
-        firstTr.append('<th>Price</th>')
-        firstTr.append('<th>Date Published</th>')
-        table.append(firstTr)
-        for (let advert of res) {
-            let tr = $('<tr>')
-            tr.append(`<td>${advert.title}</td>`)
-            tr.append(`<td>${advert.publisher}</td>`)
-            tr.append(`<td>${advert.description}</td>`)
-            tr.append(`<td>${advert.price}</td>`)
-            tr.append(`<td>${advert.published}</td>`)
-            let buttons = $('<td>')
-            let readMore = $(`<a href="#" data-id="${advert._id}">[Read More]</a>`).on('click', function () {
-                incrementViews(advert)
-            })
-            buttons.append(readMore)
-            if (advert.publisher === sessionStorage.getItem('username')) {
-                let editButton = $(`<a href="#" data-id="${advert._id}">[Edit]</a>`).on('click', function () {
-                    showEditAdView(advert)
-                    console.log(advert)
-                })
-                let deleteButton = $(`<a href="#" data-id="${advert._id}">[Delete]</a>`).on('click', function () {
-                    deleteAd($(this.parentNode.parentNode).find('a').attr('data-id'))
-                })
-                buttons.append(editButton)
-                buttons.append(deleteButton)
+    }).then(fillData).catch(handleAjaxError)
+}
 
-            }
-            tr.append(buttons)
-            table.append(tr)
+function fillData(res) {
+    let allAds = $('#ads')
+    allAds.empty()
+    showAdsView()
+    let table = $('<table>')
+    let firstTr = $('<tr>')
+    firstTr.append('<th>Title</th>')
+    firstTr.append('<th>Publisher</th>')
+    firstTr.append('<th>Description</th>')
+    firstTr.append('<th>Price</th>')
+    firstTr.append('<th>Date Published</th>')
+    table.append(firstTr)
+    for (let advert of res) {
+        let tr = $('<tr>')
+        tr.append(`<td>${advert.title}</td>`)
+        tr.append(`<td>${advert.publisher}</td>`)
+        tr.append(`<td>${advert.description}</td>`)
+        tr.append(`<td>${advert.price}</td>`)
+        tr.append(`<td>${advert.published}</td>`)
+        let buttons = $('<td>')
+        let readMore = $(`<a href="#" data-id="${advert._id}">[Read More]</a>`).on('click', function () {
+            incrementViews(advert)
+        })
+        buttons.append(readMore)
+        if (advert.publisher === sessionStorage.getItem('username')) {
+            let editButton = $(`<a href="#" data-id="${advert._id}">[Edit]</a>`).on('click', function () {
+                showEditAdView(advert)
+                console.log(advert)
+            })
+            let deleteButton = $(`<a href="#" data-id="${advert._id}">[Delete]</a>`).on('click', function () {
+                deleteAd($(this.parentNode.parentNode).find('a').attr('data-id'))
+            })
+            buttons.append(editButton)
+            buttons.append(deleteButton)
+
         }
-        allAds.append(table)
-    }).catch(handleAjaxError)
+        tr.append(buttons)
+        table.append(tr)
+    }
+    allAds.append(table)
 }
 
 function deleteAd(id) {
@@ -134,7 +136,7 @@ function editAd() {
     let published = $('#formEditAd input[name=datePublished]').val()
     let price = Number($('#formEditAd input[name=price]').val())
     let image = $('#formEditAd input[name=image]').val()
-    let views =  $('#formEditAd input[name=views]').val()
+    let views = $('#formEditAd input[name=views]').val()
     let ad = {title, description, published, publisher, price, image, views}
 
     $.ajax({
@@ -145,7 +147,7 @@ function editAd() {
     }).then(listAds).catch(handleAjaxError)
 }
 
-function incrementViews(ad){
+function incrementViews(ad) {
     $.ajax({
         method: 'GET',
         url: URL_FOR_CRUD + `/${ad._id}`,
