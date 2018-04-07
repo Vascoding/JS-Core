@@ -13,19 +13,16 @@ let auth = (() => {
         return sessionStorage.getItem('authtoken') !== null
     }
 
+    function isCreator(creatorUsername) {
+        return sessionStorage.getItem('username') === creatorUsername
+    }
+
     function hasNoTeam() {
         return sessionStorage.getItem('teamId') === 'undefined'
     }
 
     function getTeamId() {
         return sessionStorage.getItem('teamId')
-    }
-
-    function setTeamId(teamId) {
-        let tId = {
-            'teamId': teamId
-        }
-        return requester.update('user', sessionStorage.getItem('userId'), 'kinvey', tId)
     }
 
     // user/login
@@ -85,7 +82,7 @@ let auth = (() => {
         handleError,
         isAuth,
         hasNoTeam,
-        setTeamId,
-        getTeamId
+        getTeamId,
+        isCreator,
     }
 })()

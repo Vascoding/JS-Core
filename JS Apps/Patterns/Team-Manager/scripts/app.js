@@ -45,6 +45,7 @@ $(() => {
                         auth.saveSession(res)
                         ctx.redirect('#/index.html')
                     })
+                    .catch((err) => auth.handleError(err))
             } else {
                 auth.showError('Password must match Repeat Password')
             }
@@ -90,21 +91,35 @@ $(() => {
                 })
         })
 
-        this.get('/catalog/:_id', (ctx) => {
-            //console.log(ctx.params._id.slice(1, ctx.params._id.length))
-            teamsService.loadTeamDetails(ctx.params._id.slice(1, ctx.params._id.length))
+        this.get('/catalog/:id', (ctx) => {
+            teamsService.loadTeamDetails(ctx.params.id.slice(1, ctx.params.id.length))
                 .then((res) => {
                     ctx.name = res.name
                     ctx.comment = res.comment
                     ctx.loggedIn = auth.isAuth()
-                    ctx.loadPartials({
-                        header: './templates/common/header.hbs',
-                        teamMember: './templates/catalog/teamMember.hbs',
-                        teamControls: './templates/catalog/teamControls.hbs',
-                        footer: './templates/common/footer.hbs',
-                    }).then(function () {
-                        this.partial('./templates/catalog/details.hbs')
-                    })
+                    ctx.isOnTeam = auth.getTeamId() === res._id
+                    ctx.isAuthor = auth.isCreator(res.author)
+                    ctx.hasNoTeam = auth.hasNoTeam()
+                    ctx.teamId = res._id
+                    userService.getTeamMembers(res._id)
+                        .then((res) => {
+                            let users = []
+                            for (let user of res) {
+                                if (user.teamId === ctx.teamId) {
+                                    users.push(user)
+                                }
+                            }
+                            ctx.members = users
+                            ctx.loadPartials({
+                                header: './templates/common/header.hbs',
+                                teamMember: './templates/catalog/teamMember.hbs',
+                                teamControls: './templates/catalog/teamControls.hbs',
+                                footer: './templates/common/footer.hbs',
+                            }).then(function () {
+                                this.partial('./templates/catalog/details.hbs')
+                            })
+                        })
+
                 })
                 .catch((err) => console.log(err))
         })
@@ -129,6 +144,52 @@ $(() => {
                         })
                 })
                 .catch((err) => auth.handleError(err))
+        })
+
+        this.get('/edit/:id', (ctx) => {
+            teamsService.loadTeamDetails(ctx.params.id.slice(1, ctx.params.id.length))
+                .then((res) => {
+                    ctx.name = res.name
+                    ctx.comment = res.comment
+                    ctx.loggedIn = auth.isAuth()
+                    ctx.teamId = res._id
+                    ctx.loadPartials({
+                        header: './templates/common/header.hbs',
+                        editForm: './templates/edit/editForm.hbs',
+                        footer: './templates/common/footer.hbs',
+                    }).then(function () {
+                        this.partial('./templates/edit/editPage.hbs')
+                    })
+                })
+                .catch((err) => auth.handleError(err))
+        })
+
+        this.post('/edit/:teamId', (ctx) => {
+            console.log(ctx.params.teamId)
+            teamsService.edit(ctx.params.teamId.slice(1, ctx.params.teamId.length), ctx.params.name, ctx.params.comment)
+                .then((res) => {
+                    ctx.redirect(`/catalog/:${res._id}`)
+                })
+                .catch((err) => auth.handleError(err))
+        })
+
+        this.get('/join/:teamId', (ctx) => {
+            let teamId = ctx.params.teamId.slice(1, ctx.params.teamId.length)
+            teamsService.joinTeam(teamId)
+                .then(() => {
+                    sessionStorage.setItem('teamId', teamId)
+                    ctx.redirect(`#/catalog/${ctx.params.teamId}`)
+                })
+
+        })
+
+        this.get('/leave', (ctx) => {
+            teamsService.leaveTeam()
+                .then(() => {
+                    sessionStorage.setItem('teamId', undefined)
+                    ctx.redirect(`#/catalog`)
+                })
+
         })
     })
 

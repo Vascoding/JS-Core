@@ -3,6 +3,6 @@
 {{/if}}
 {{#if isOnTeam}}
     <a href="#/leave" class="btn btn-default">Leave Team</a>
-{{else}}
+{{else if hasNoTeam}}
     <a href="#/join/:{{teamId}}" class="btn btn-default">Join Team</a>
 {{/if}}
