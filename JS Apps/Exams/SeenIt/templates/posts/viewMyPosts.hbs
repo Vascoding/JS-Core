@@ -1,0 +1,17 @@
+{{> header}}
+<div class="content">
+    <section id="viewMyPosts">
+        {{> navigate}}
+        <div class="post post-content">
+            <h1>Your Posts</h1>
+        </div>
+        <div class="posts">
+            {{#each posts}}
+                {{> post}}
+            {{else}}
+                <p>No posts in database!</p>
+            {{/each}}
+        </div>
+    </section>
+</div>
+{{> footer}}

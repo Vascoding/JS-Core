@@ -103,13 +103,7 @@ $(() => {
                     ctx.teamId = res._id
                     userService.getTeamMembers(res._id)
                         .then((res) => {
-                            let users = []
-                            for (let user of res) {
-                                if (user.teamId === ctx.teamId) {
-                                    users.push(user)
-                                }
-                            }
-                            ctx.members = users
+                            ctx.members = res
                             ctx.loadPartials({
                                 header: './templates/common/header.hbs',
                                 teamMember: './templates/catalog/teamMember.hbs',
@@ -137,7 +131,7 @@ $(() => {
         this.post('/create', (ctx) => {
             teamsService.createTeam(ctx.params.name, ctx.params.comment)
                 .then((res) => {
-                    auth.setTeamId(res._id)
+                    teamsService.joinTeam(res._id)
                         .then((res) => {
                             auth.saveSession(res)
                             ctx.redirect('#/catalog')

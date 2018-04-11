@@ -1,6 +1,6 @@
 let userService = (() => {
-    function getTeamMembers() {
-        return requester.get('user', '', 'kinvey');
+    function getTeamMembers(teamId) {
+        return requester.get('user', `?query={"teamId": "${teamId}"}`, 'kinvey');
     }
 
     return {

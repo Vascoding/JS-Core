@@ -1,0 +1,12 @@
+<article class="post post-content">
+    <p>{{content}}</p>
+    <div class="info">
+        submitted {{created}} ago by {{author}} |
+        {{#if isAuthor}}
+            <form action="#/delete/comment/:{{_id}}" method="post" id="commentForm">
+                <input type="hidden" name="postId" value="{{postId}}">
+                <input type="submit" href="#/delete/comment/:{{_id}}" value="delete" class="deleteLink">
+            </form>
+        {{/if}}
+    </div>
+</article>

@@ -1,0 +1,13 @@
+<header><span>Chirper</span></header>
+
+<div class="menu">
+    <a href="#/index.html">Home</a>
+    <a href="#/discover">Discover</a>
+    {{#if loggedIn}}
+    <a href="#/me">Me</a>
+    <a href="#/logout">Logout</a>
+    {{else}}
+        <a href="#/login">Sign In</a>
+        <a href="#/register">Register</a>
+    {{/if}}
+</div>
