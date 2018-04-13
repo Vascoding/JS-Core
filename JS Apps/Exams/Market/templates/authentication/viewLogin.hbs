@@ -1,0 +1,18 @@
+{{> header}}
+<section id="viewLogin">
+    <h1>Please login</h1>
+    <form action="#/login" method="post" id="formLogin">
+        <label>
+            <div>Username:</div>
+            <input type="text" value="evil" name="username" id="loginUsername" required />
+        </label>
+        <label>
+            <div>Password:</div>
+            <input type="password" value="123" name="password" id="loginPasswd" required />
+        </label>
+        <div>
+            <input type="submit" value="Login" />
+        </div>
+    </form>
+</section>
+{{> footer}}

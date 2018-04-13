@@ -1,0 +1,19 @@
+<header id="menu">
+    <a href="#/home" class="anonymous" id="linkMenuAppHome">Home</a>
+    {{#if loggedIn}}
+        <a href="#/shop" class="useronly" id="linkMenuShop">Shop</a>
+        <a href="#/cart" class="useronly" id="linkMenuCart">Cart</a>
+        <a href="#/logout" class="useronly" id="linkMenuLogout">Logout</a>
+        <section id="viewUserHome">
+            <h1 id="viewUserHomeHeading">Welcome, {{user}}!</h1>
+            <a href="#/shop" id="linkUserHomeShop">Shop</a>
+            <a href="#/cart" id="linkUserHomeCart">Cart</a>
+        </section>
+    {{else}}
+        <a href="#/login" class="anonymous" id="linkMenuLogin">Login</a>
+        <a href="#/register" class="anonymous" id="linkMenuRegister">Register</a>
+    {{/if}}
+
+
+    <span class="useronly" id="spanMenuLoggedInUser">Welcome, {{user}}!</span>
+</header>
