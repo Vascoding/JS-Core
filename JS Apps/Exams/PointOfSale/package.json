@@ -1,0 +1,10 @@
+{
+  "name": "PointOfSale",
+  "version": "0.0.1",
+  "dependencies": {
+    "bootstrap": "latest",
+    "handlebars": "latest",
+    "jquery": "latest",
+    "sammy": "latest"
+  }
+}

@@ -63,7 +63,7 @@ let auth = (() => {
 
     $(document).on({
         ajaxStart: function() { $("#loadingBox").show()},
-        ajaxStop: function() { $("#loadingBox").hide()}
+        ajaxStop: function() { setTimeout(() => $("#loadingBox").hide(), 800)}
     })
 
     return {

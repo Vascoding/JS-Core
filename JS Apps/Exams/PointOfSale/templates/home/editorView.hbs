@@ -1,0 +1,49 @@
+<section id="create-receipt-view">
+    <h1>Create Receipt</h1>
+    <div class="table">
+        <div class="table-head">
+            <div class="col wide">Product Name</div>
+            <div class="col wide">Quantity</div>
+            <div class="col wide">Price per Unit</div>
+            <div class="col">Sub-total</div>
+            <div class="col">Action</div>
+        </div>
+        {{#each entries}}
+            {{> entriesView}}
+        {{/each}}
+
+        <div class="row">
+            <form action="#/entry/create" method="post" id="create-entry-form">
+                <div class="col wide">
+                    <input name="type" placeholder="Product name">
+                    <input name="receiptId" value="{{_id}}" hidden>
+                </div>
+                <div class="col wide">
+                    <input name="qty" placeholder="Quantity">
+                </div>
+                <div class="col wide">
+                    <input name="price" placeholder="Price per Unit">
+                </div>
+                <div class="col">Sub-total</div>
+                <div class="col">
+                    <input id="addItemBtn" type="submit" value="Add"/>
+                </div>
+            </form>
+        </div>
+        <div class="table-foot">
+            <form action="#/checkout" method="post" id="create-receipt-form">
+                <input name="receiptId" value="{{_id}}" hidden>
+                <div class="col wide">
+                </div>
+                <div class="col wide">
+                </div>
+                <div class="col wide right">Total:</div>
+                <div class="col">{{total}}</div>
+                <input name="total" value="{{total}}" hidden>
+                <div class="col">
+                    <input id="checkoutBtn" type="submit" value="Checkout"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

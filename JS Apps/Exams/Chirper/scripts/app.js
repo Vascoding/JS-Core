@@ -5,12 +5,24 @@ $(() => {
         this.get('/index.html', (ctx) => {
             ctx.loggedIn = auth.isAuth()
             if (ctx.loggedIn) {
-                userService.getSubscriptions()
-                    .then((res) => {
+                let following = userService.getFollowing()
+                let followers = userService.getFollowers()
+                let subscriptions = userService.getSubscriptions()
+
+                Promise.all([following, followers, subscriptions])
+                    .then(([followingRes, followersRes, subscriptionsRes]) => {
+                        console.log(followingRes)
+                        console.log(followersRes)
+                        console.log(subscriptionsRes)
+                        let following = 0
+                        if (followingRes[0].subscriptions) {
+                            following = followingRes[0].subscriptions.length
+                        }
+                        let followers = followersRes.length
                         let chirpsInfo = []
-                        ctx.name = res.username
-                        if (res.subscriptions) {
-                            for (let obj of res.subscriptions) {
+                        ctx.name = subscriptionsRes.username
+                        if (subscriptionsRes.subscriptions) {
+                            for (let obj of subscriptionsRes.subscriptions) {
                                 chirpService.loadChirpsByUser(obj)
                                     .then((res) => {
                                         for (let chirp of res) {
@@ -20,6 +32,9 @@ $(() => {
                                                 created: calcTime(chirp._kmd.ect)
                                             })
                                         }
+                                        ctx.following = following
+                                        ctx.followers = followers
+                                        ctx.chirpsCount = subscriptionsRes.length
                                         ctx.chirps = chirpsInfo === [] ? 'no chirps' : chirpsInfo
                                         ctx.loadPartials({
                                             header: './templates/common/header.hbs',
@@ -32,7 +47,10 @@ $(() => {
                                     })
                             }
                         } else {
-                            ctx.name = res.username
+                            ctx.following = following
+                            ctx.followers = followers
+                            ctx.chirpsCount = 0
+                            ctx.name = subscriptionsRes.username
                             ctx.loadPartials({
                                 header: './templates/common/header.hbs',
                                 footer: './templates/common/footer.hbs',
@@ -122,8 +140,12 @@ $(() => {
 
                     userService.getUserById()
                         .then((res) => {
-                            console.log(res.subscriptions)
-                            ctx.unfollowed = !res.subscriptions.includes(ctx.params.username.slice(1, ctx.params.username.length))
+
+                            if (res.subscriptions) {
+                                ctx.unfollowed = !res.subscriptions.includes(ctx.params.username.slice(1, ctx.params.username.length))
+                            } else {
+                                ctx.unfollowed = true
+                            }
                             ctx.chirps = chirpsInfo
                             ctx.username = ctx.params.username.slice(1, ctx.params.username.length)
                             ctx.loggedIn = auth.isAuth()
@@ -212,6 +234,9 @@ $(() => {
         this.get('/follow/:username', (ctx) => {
             userService.getUserById()
                 .then((res) => {
+                    if (!res.subscriptions) {
+                        res.subscriptions = []
+                    }
                     res.subscriptions.push(ctx.params.username.slice(1, ctx.params.username.length))
                     userService.updateUserFollowing(res)
                         .then(() => {
@@ -232,26 +257,26 @@ $(() => {
         })
     })
 
-    function calcTime(dateIsoFormat) {
-        let diff = new Date - (new Date(dateIsoFormat));
-        diff = Math.floor(diff / 60000);
-        if (diff < 1) return 'less than a minute';
-        if (diff < 60) return diff + ' minute' + pluralize(diff);
-        diff = Math.floor(diff / 60);
-        if (diff < 24) return diff + ' hour' + pluralize(diff);
-        diff = Math.floor(diff / 24);
-        if (diff < 30) return diff + ' day' + pluralize(diff);
-        diff = Math.floor(diff / 30);
-        if (diff < 12) return diff + ' month' + pluralize(diff);
-        diff = Math.floor(diff / 12);
-        return diff + ' year' + pluralize(diff);
+        function calcTime(dateIsoFormat) {
+            let diff = new Date - (new Date(dateIsoFormat));
+            diff = Math.floor(diff / 60000);
+            if (diff < 1) return 'less than a minute';
+            if (diff < 60) return diff + ' minute' + pluralize(diff);
+            diff = Math.floor(diff / 60);
+            if (diff < 24) return diff + ' hour' + pluralize(diff);
+            diff = Math.floor(diff / 24);
+            if (diff < 30) return diff + ' day' + pluralize(diff);
+            diff = Math.floor(diff / 30);
+            if (diff < 12) return diff + ' month' + pluralize(diff);
+            diff = Math.floor(diff / 12);
+            return diff + ' year' + pluralize(diff);
 
-        function pluralize(value) {
-            if (value !== 1) return 's';
-            else return '';
+            function pluralize(value) {
+                if (value !== 1) return 's';
+                else return '';
+            }
         }
-    }
 
 
-    app.run();
-});
+        app.run();
+    });
